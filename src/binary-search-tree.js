@@ -74,11 +74,11 @@ class BinarySearchTree {
 
     function findNode(node, data) {
       if (!node) {
-        return;
+        return null;
       }
 
       if (node.data === data) {
-        return true;
+        return node.data;
       }
 
       if (data < node.data) {
@@ -90,7 +90,7 @@ class BinarySearchTree {
   }
 
   remove(data) {
-    this.root = removeNode(this.root, data);
+    this.rootTree = removeNode(this.rootTree, data);
 
     function removeNode(node, data) {
       if (!node) {

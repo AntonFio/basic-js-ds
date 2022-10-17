@@ -6,6 +6,15 @@ const { NotImplementedError } = require('../extensions/index.js');
 * Implement simple binary search tree according to task description
 * using Node from extensions
 */
+
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.left = null;
+    this.right = null;
+  }
+}
+
 class BinarySearchTree {
   constructor() {
     this.rootTree = null
@@ -31,7 +40,7 @@ class BinarySearchTree {
         return node;
       }
 
-      if (data < node.value) {
+      if (data < node.data) {
         node.left = addData(node.left, data);
       } else {
         node.right = addData(node.right, data);
@@ -65,7 +74,7 @@ class BinarySearchTree {
 
     function findNode(node, data) {
       if (!node) {
-        return false
+        return;
       }
 
       if (node.data === data) {
@@ -81,15 +90,44 @@ class BinarySearchTree {
   }
 
   remove(data) {
-    this.rootTree = removeData(this.rootTree, data);
+    this.root = removeNode(this.root, data);
 
-    function removeData(node, data) {
+    function removeNode(node, data) {
       if (!node) {
         return null;
       }
 
+      if (data < node.data) {
+        node.left = removeNode(node.left, data);
+        return node;
+      } else if (node.data < data) {
+        node.right = removeNode(node.right, data);
+        return node;
+      } else {
+        if (!node.left && !node.right) {
+          return null;
+        }
 
+        if (!node.left) {
+          node = node.right;
+          return node;
+        }
 
+        if (!node.right) {
+          node = node.left;
+          return node;
+        }
+
+        let minRight = node.right;
+        while (minRight.left) {
+          minRight = minRight.left;
+        }
+        node.data = minRight.data;
+
+        node.right = removeNode(node.right, minRight.data);
+
+        return node;
+      }
     }
   }
 
@@ -119,6 +157,7 @@ class BinarySearchTree {
     return node.data
   }
 }
+
 
 module.exports = {
   BinarySearchTree
